@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+flask
+pymongo
+python-dotenv
+pandas
+numpy
+scikit-learn
+matplotlib

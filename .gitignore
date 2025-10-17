@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+*.log
+*.zip
+*.joblib
+*.parquet
+*.pyc
+.ipynb_checkpoints/
+venv/
+iom_env/
+data/raw/
+data/iom_datasets/
+data/iom_out/

@@ -11,3 +11,11 @@ iom_env/
 data/raw/
 data/iom_datasets/
 data/iom_out/
+data_local_backup/
+data_local_backup/
+data/processed/*.csv
+reports/learner_clusters.csv
+reports/learner_clusters.csv.gz
+submission/learner_clusters.csv.gz
+IOM_Task_2_1_Submission.tgz
+*.tgz

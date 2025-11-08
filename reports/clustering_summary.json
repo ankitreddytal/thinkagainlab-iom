@@ -1,0 +1,18 @@
+{
+  "csv": "data/processed/iom_task2_input_aug.csv",
+  "report_csv": "reports/learner_clusters.csv",
+  "artifacts": {
+    "preprocess": "models/preprocess.joblib",
+    "kmeans": "models/kmeans.joblib",
+    "gmm": "models/gmm.joblib"
+  },
+  "quality_metrics": {
+    "sample_size": 100000,
+    "silhouette": 0.36621968950789713,
+    "davies_bouldin": 0.8822057243821521,
+    "calinski_harabasz": 113640.93438858542,
+    "inertia": 13375109.957425846,
+    "n_clusters": 3,
+    "preprocess_exists": true
+  }
+}

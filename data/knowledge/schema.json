@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Adaptive Learning Dataset Schema (Full)",
+  "description": "Top-level schema describing learners, content, and progress records used by the adaptive learning system.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "learners": {
+      "type": "array",
+      "description": "List of learner profiles (unique by learner_id).",
+      "items": { "$ref": "#/definitions/learner" }
+    },
+    "contents": {
+      "type": "array",
+      "description": "List of learning content items (unique by content_id).",
+      "items": { "$ref": "#/definitions/content" }
+    },
+    "progress": {
+      "type": "array",
+      "description": "List of progress records linking learners to content (unique by record_id).",
+      "items": { "$ref": "#/definitions/progress" }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional file/dataset metadata.",
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" },
+        "version": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  },
+  "required": ["learners", "contents", "progress"],
+  "definitions": {
+    "learner": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Learner profile and aggregated metrics.",
+      "properties": {
+        "learner_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "Primary key: unique learner identifier (e.g., A101)."
+        },
+        "name": { "type": "string" },
+        "age": { "type": "integer", "minimum": 0 },
+        "course_enrolled": { "type": "string" },
+        "time_spent": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total time spent on platform (minutes)."
+        },
+        "avg_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Average percent score (0-100)."
+        },
+        "accuracy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Accuracy as fraction (0-1). If stored as percent, normalize to 0-1."
+        },
+        "cluster_label": { "type": "string", "description": "Behavioral cluster label." },
+        "learning_style": { "type": "string", "description": "Optional: e.g., Visual, Auditory." },
+        "created_at": { "type": "string", "format": "date-time" }
+      },
+      "required": ["learner_id"]
+    },
+
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Content / module / item metadata.",
+      "properties": {
+        "content_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "Primary key for content (e.g., C301)."
+        },
+        "title": { "type": "string" },
+        "topic": { "type": "string" },
+        "difficulty_level": {
+          "type": "string",
+          "enum": ["Easy", "Medium", "Hard"],
+          "description": "Difficulty bucket."
+        },
+        "content_type": {
+          "type": "string",
+          "enum": ["Video", "Quiz", "Text", "Interactive", "Assignment", "Other"]
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of prerequisite topic names or content_ids."
+        },
+        "estimated_time": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Estimated time to complete (minutes)."
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional freeform tags for search / taxonomy."
+        }
+      },
+      "required": ["content_id", "topic", "difficulty_level"]
+    },
+
+    "progress": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Record of a learner's interaction with a content item.",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "Primary key for progress record. (e.g., P5001)"
+        },
+        "learner_id": { "type": "string", "description": "FK -> learners.learner_id" },
+        "content_id": { "type": "string", "description": "FK -> contents.content_id" },
+        "completion": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction completed (0-1). If using percent, normalize to 0-1."
+        },
+        "mastery": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Estimated mastery for this topic (0-1)."
+        },
+        "attempts": { "type": "integer", "minimum": 0 },
+        "feedback": { "type": "string" },
+        "next_branch": { "type": "string", "description": "Suggested next topic/content_id." },
+        "last_activity_date": { "type": "string", "format": "date-time" },
+        "session_id": { "type": "string", "description": "Optional: session identifier for grouping events." },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Raw score on the content item (0-100). Optional if avg_score is used elsewhere."
+        }
+      },
+      "required": ["record_id", "learner_id", "content_id"]
+    }
+  },
+  "examples": [
+    {
+      "learners": [
+        {
+          "learner_id": "A101",
+          "name": "Sara",
+          "age": 21,
+          "course_enrolled": "Intro to Python",
+          "time_spent": 120.5,
+          "avg_score": 85.2,
+          "accuracy": 0.88,
+          "cluster_label": "Efficient High Performers",
+          "learning_style": "Visual",
+          "created_at": "2025-10-23T09:30:00Z"
+        }
+      ],
+      "contents": [
+        {
+          "content_id": "C301",
+          "title": "Intro to Loops",
+          "topic": "Loops",
+          "difficulty_level": "Medium",
+          "content_type": "Article",
+          "prerequisites": ["C100"],
+          "estimated_time": 30,
+          "tags": ["control-flow", "python"]
+        }
+      ],
+      "progress": [
+        {
+          "record_id": "P5001",
+          "learner_id": "A101",
+          "content_id": "C301",
+          "completion": 0.95,
+          "mastery": 0.85,
+          "attempts": 1,
+          "feedback": "Good understanding, minor syntax errors.",
+          "next_branch": "C302",
+          "last_activity_date": "2025-10-23T10:00:00Z",
+          "score": 92
+        }
+      ],
+      "metadata": {
+        "generated_at": "2025-10-23T10:05:00Z",
+        "source": "iom.xlsx",
+        "version": "1.1"
+      }
+    }
+  ]
+}

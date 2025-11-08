@@ -1,0 +1,14 @@
+paths:
+  raw: data/raw
+  processed: data/processed
+  knowledge: data/knowledge
+  artifacts: models
+  reports: reports
+training:
+  kmeans:
+    n_clusters: 3
+    random_state: 42
+features:
+  numeric: [time_spent, avg_score, accuracy, topic_progress]
+  categorical: [difficulty_level]
+  difficulty_map: {beginner: 0, intermediate: 1, advanced: 2}

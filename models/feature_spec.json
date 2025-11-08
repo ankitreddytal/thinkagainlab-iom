@@ -1,0 +1,11 @@
+{
+  "numeric": [
+    "time_spent",
+    "avg_score",
+    "accuracy",
+    "topic_progress"
+  ],
+  "categorical": [
+    "difficulty_level"
+  ]
+}

@@ -19,3 +19,4 @@ reports/learner_clusters.csv.gz
 submission/learner_clusters.csv.gz
 IOM_Task_2_1_Submission.tgz
 *.tgz
+data_local_backup/
